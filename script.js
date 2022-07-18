@@ -5,6 +5,8 @@ let lastOperator = '';
 let selectedOperator = '';
 let stack = [];
 let reset = false;
+let pressed = true;
+let equals = false;
 
 
 function add(a,b){
@@ -30,9 +32,8 @@ function divide(a,b){
 
 function operate(e, a, b){
     if(isNaN(a)|isNaN(b)){
-        screen.innerText = 'aa'
         stack = [];
-        return;
+        return 'Error';
     }
     switch(e.id){
         case 'add':
@@ -48,25 +49,29 @@ function operate(e, a, b){
 
 function registerInput(e){
 
-    screen.innerText += e.target.innerText;
-    console.log(stack);
-    console.log(screen.innerText);
+    if(reset){
+        if(screen.innerText !== '')
+        stack.push(parseInt(screen.innerText));
 
-    if(!stack[1] & screen.innerText !== '' & !reset){
-        console.log('buzz')
-        reset = true;
+        reset = false;
         screen.innerText = '';
+
     }
-    
+
+    screen.innerText += e.target.innerText;
 
     if(lastOperator !== '') {
         selectedOperator.style.backgroundColor = 'orange';
     }
-
-
-    console.log('button pressed')
 }
 
+function getPercentage(){
+    screen.innerText = parseInt(screen.innerText)/100;
+}
+
+function getInverse(){
+    screen.innerText = -parseInt(screen.innerText);
+}
 
 
 
@@ -79,32 +84,28 @@ operators.forEach(operator => {
         if(lastOperator !== ''){
             lastOperator.style.backgroundColor = 'orange';
         }
-
         selectedOperator = e.target;
         selectedOperator.style.backgroundColor = 'red';
 
 
         if(stack.length < 2) {
             stack.push(parseInt(screen.innerText));
-
             screen.innerText = "";
         }
-
-
-        //const newValue = parseInt(screen.innerText);
 
         console.log(stack)
 
         if(stack.length === 2){
             screen.innerText = '';
             screen.innerText = operate(lastOperator ,stack[0],stack[1]);
-            stack.pop();
-            reset = false;
+            stack = [];
+            reset = true;
             console.log(stack);
-        }    
+        }
+
         lastOperator = selectedOperator;
-        
-            //currentValue = parseInt(screen.innerText);
+
+
 
     });
 });
