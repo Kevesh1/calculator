@@ -49,15 +49,16 @@ function operate(e, a, b){
 
 function registerInput(e){
 
+
     if(reset){
         if(screen.innerText !== '')
         stack.push(parseInt(screen.innerText));
 
         reset = false;
         screen.innerText = '';
-
     }
 
+    if(screen.innerText.length < 14)
     screen.innerText += e.target.innerText;
 
     if(lastOperator !== '') {
@@ -66,11 +67,11 @@ function registerInput(e){
 }
 
 function getPercentage(){
-    screen.innerText = parseInt(screen.innerText)/100;
+    screen.innerText = parseFloat(screen.innerText)/100;
 }
 
 function getInverse(){
-    screen.innerText = -parseInt(screen.innerText);
+    screen.innerText = -parseFloat(screen.innerText);
 }
 
 
@@ -81,6 +82,8 @@ buttons.forEach(button => {
 operators.forEach(operator => {
     operator.addEventListener('click', e => {
 
+        
+
         if(lastOperator !== ''){
             lastOperator.style.backgroundColor = 'orange';
         }
@@ -89,7 +92,7 @@ operators.forEach(operator => {
 
 
         if(stack.length < 2) {
-            stack.push(parseInt(screen.innerText));
+            stack.push(parseFloat(screen.innerText));
             screen.innerText = "";
         }
 
@@ -104,6 +107,10 @@ operators.forEach(operator => {
         }
 
         lastOperator = selectedOperator;
+
+        if(lastOperator.id === 'equals'){
+            lastOperator.style.backgroundColor = 'orange';
+        }
 
 
 
